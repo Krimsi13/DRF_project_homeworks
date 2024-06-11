@@ -1,0 +1,46 @@
+[
+  {
+    "model": "users.user",
+    "pk": 1,
+    "fields": {
+      "password": "qwerty",
+      "last_login": null,
+      "is_superuser": false,
+      "first_name": "",
+      "last_name": "",
+      "is_staff": false,
+      "is_active": true,
+      "date_joined": "2024-06-11T19:24:24.598Z",
+      "email": "example.user@yandex.ru",
+      "phone": "",
+      "city": "",
+      "avatar": "",
+      "groups": [],
+      "user_permissions": []
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 1,
+    "fields": {
+      "user": 1,
+      "date_of_payment": "2024-05-19",
+      "course": 1,
+      "lesson": null,
+      "amount": 10000,
+      "payment_method": "cash"
+    }
+  },
+  {
+    "model": "users.payments",
+    "pk": 2,
+    "fields": {
+      "user": 1,
+      "date_of_payment": "2024-06-10",
+      "course": 1,
+      "lesson": 1,
+      "amount": 2000,
+      "payment_method": "transfer"
+    }
+  }
+]
