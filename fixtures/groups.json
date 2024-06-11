@@ -1,9 +1,9 @@
 [
   {
     "model": "users.user",
-    "pk": 1,
+    "pk": 2,
     "fields": {
-      "password": "qwerty",
+      "password": "qwe123",
       "last_login": null,
       "is_superuser": false,
       "first_name": "",
@@ -11,7 +11,7 @@
       "is_staff": false,
       "is_active": true,
       "date_joined": "2024-06-11T19:24:24.598Z",
-      "email": "example.user@yandex.ru",
+      "email": "example2.user@yandex.ru",
       "phone": "",
       "city": "",
       "avatar": "",
@@ -23,7 +23,7 @@
     "model": "users.payments",
     "pk": 1,
     "fields": {
-      "user": 1,
+      "user": 2,
       "date_of_payment": "2024-05-19",
       "course": 1,
       "lesson": null,
@@ -35,10 +35,10 @@
     "model": "users.payments",
     "pk": 2,
     "fields": {
-      "user": 1,
+      "user": 2,
       "date_of_payment": "2024-06-10",
       "course": 1,
-      "lesson": 1,
+      "lesson": 2,
       "amount": 2000,
       "payment_method": "transfer"
     }
