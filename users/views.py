@@ -6,6 +6,8 @@ from rest_framework.permissions import AllowAny
 
 from users.models import User, Payments
 from users.serializers import UserSerializer, PaymentsSerializer
+from users.services import create_stripe_price, create_stripe_session, create_stripe_product
+
 
 # class UserViewSet(viewsets.ModelViewSet):
 #     serializer_class = UserSerializer
@@ -44,3 +46,18 @@ class PaymentsListAPIView(ListAPIView):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ('course', 'lesson', 'payment_method',)
     ordering_fields = ('date_of_payment',)
+
+
+class PaymentsCreateApiView(CreateAPIView):
+    serializer_class = PaymentsSerializer
+    queryset = Payments.objects.all()
+
+    def perform_create(self, serializer):
+        payment = serializer.save(user=self.request.user)
+        product = create_stripe_product(payment.course.name)
+        amount = payment.amount
+        price = create_stripe_price(amount, product.get("name"))
+        session_id, payment_link = create_stripe_session(price)
+        payment.session_id = session_id
+        payment.link_of_payment = payment_link
+        payment.save()

@@ -57,6 +57,11 @@ class Payments(models.Model):
 
     payment_method = models.CharField(choices=METHODS, max_length=20, verbose_name="Способ оплаты")
 
+    session_id = models.CharField(max_length=255, **NULLABLE, verbose_name="ID сессии", help_text="Укажите ID сессии")
+
+    link_of_payment = models.URLField(
+        max_length=400, **NULLABLE, verbose_name="Ссылка на оплату", help_text="Укажите ссылку на оплату")
+
     class Meta:
         verbose_name = "Платёж"
         verbose_name_plural = "Платежи"
