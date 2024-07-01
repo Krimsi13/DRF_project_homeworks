@@ -12,6 +12,8 @@ from materials.paginators import CustomPagination
 from materials.serializers import CourseSerializer, LessonSerializer, SubscriptionSerializer
 from users.permissions import IsModer, IsOwner
 
+from materials.tasks import send_mail_of_update_course
+
 
 class CourseViewSet(ModelViewSet):
     """Viewset for Course"""
@@ -32,6 +34,25 @@ class CourseViewSet(ModelViewSet):
         course = serializer.save()
         course.owner = self.request.user
         course.save()
+
+# 1ый вариант
+    # def perform_update(self, serializer):
+    #     course = serializer.save()
+    #     email_list = []
+    #
+    #     subscrubers = course.subscribe.all()
+    #     for subscruber in subscrubers:
+    #         email = subscruber.user.email
+    #         email_list.append(email)
+    #
+    #     send_mail_of_update_course.delay(email_list)
+    #     course.save()
+
+    def update(self, request, pk):
+        course = get_object_or_404(Course, pk=pk)
+        send_mail_of_update_course.delay(course_id=course.id)
+
+        return super().update(request)
 
 
 class LessonCreateApiView(CreateAPIView):
