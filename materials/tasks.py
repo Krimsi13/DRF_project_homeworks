@@ -1,9 +1,12 @@
+from datetime import datetime, timezone, timedelta
 from celery import shared_task
 from django.core.mail import send_mail
 
 from config.settings import EMAIL_HOST_USER
 
 from materials.models import Subscription, Course
+
+from users.models import User
 
 
 # 1ый вариант
@@ -27,3 +30,15 @@ def send_mail_of_update_course(pk):
               message=f'Курс "{course}" был обновлен.',
               from_email=EMAIL_HOST_USER,
               recipient_list=[subscribers.user.email])
+
+
+@shared_task
+def check_activity_user():
+    is_active_users = User.objects.filter(is_active=True)
+    current_time = datetime.now(timezone.utc)
+
+    for user in is_active_users:
+        if user.last_login:
+            if current_time - user.last_login > timedelta(days=30):
+                user.is_active = False
+                user.save()
