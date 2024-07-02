@@ -9,7 +9,7 @@ from materials.models import Subscription, Course
 from users.models import User
 
 
-# 1ый вариант
+# Вариант №1
 # @shared_task
 # def send_mail_of_update_course(email_list):
 #     for email in email_list:
@@ -20,16 +20,29 @@ from users.models import User
 #             recipient_list=[email],
 #         )
 
+# Вариант №2
+# @shared_task
+# def send_mail_of_update_course(pk):
+#     course = Course.objects.get(pk=pk)
+#     subscribers = Subscription.objects.get(course=pk)
+#
+#     send_mail(subject=f'Обновление курса.',
+#               message=f'Курс "{course}" был обновлен.',
+#               from_email=EMAIL_HOST_USER,
+#               recipient_list=[subscribers.user.email])
 
+# Вариант №3
 @shared_task
 def send_mail_of_update_course(pk):
-    course = Course.objects.get(pk=pk)
-    subscribers = Subscription.objects.get(course=pk)
+    course = Course.objects.get(id=pk)
+    subscribers = Subscription.objects.filter(course=course)
+    email_list = [subscriber.user.email for subscriber in subscribers]
 
-    send_mail(subject=f'Обновление курса.',
-              message=f'Курс "{course}" был обновлен.',
-              from_email=EMAIL_HOST_USER,
-              recipient_list=[subscribers.user.email])
+    for email in email_list:
+        send_mail(subject=f'Обновление курса.',
+                  message=f'Курс "{course}" был обновлен.',
+                  from_email=EMAIL_HOST_USER,
+                  recipient_list=[email])
 
 
 @shared_task

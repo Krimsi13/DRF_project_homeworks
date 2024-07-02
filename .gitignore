@@ -114,6 +114,9 @@ __pypackages__/
 
 # Celery stuff
 celerybeat-schedule
+gitignore/celerybeat-schedule.bak
+gitignore/celerybeat-schedule.dat
+gitignore/celerybeat-schedule.dir
 celerybeat.pid
 
 # SageMath parsed files

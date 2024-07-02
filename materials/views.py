@@ -35,7 +35,7 @@ class CourseViewSet(ModelViewSet):
         course.owner = self.request.user
         course.save()
 
-# 1ый вариант
+# Вариант №1
     # def perform_update(self, serializer):
     #     course = serializer.save()
     #     email_list = []
@@ -48,11 +48,17 @@ class CourseViewSet(ModelViewSet):
     #     send_mail_of_update_course.delay(email_list)
     #     course.save()
 
-    def update(self, request, pk):
-        course = get_object_or_404(Course, pk=pk)
-        send_mail_of_update_course.delay(course_id=course.id)
+# Вариант №2
+#     def update(self, request, pk):
+#         course = get_object_or_404(Course, pk=pk)
+#         send_mail_of_update_course.delay(course_id=course.id)
+#
+#         return super().update(request)
 
-        return super().update(request)
+# Вариант №3
+    def perform_update(self, serializer):
+        course = serializer.save()
+        send_mail_of_update_course.delay(course_id=course.id)
 
 
 class LessonCreateApiView(CreateAPIView):
