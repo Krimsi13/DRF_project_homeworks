@@ -173,6 +173,13 @@ SIMPLE_JWT = {
 
 STRIPE_APY_KEY = os.getenv("STRIPE_APY_KEY")
 
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379",
+    }
+}
+
 CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL')
 
 CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND')

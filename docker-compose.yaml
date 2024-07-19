@@ -18,13 +18,20 @@ services:
 
   redis:
     image: redis
-    restart: on-failure
-    expose:
-      - "6379"
-    volumes:
-      - .:/app
+
+#    ports:
+#      - '6378:6379'
+#
+#
+#    volumes:
+#      - .:/app
     env_file:
       - .env
+    healthcheck:
+      test: [ 'CMD', 'redis-cli', 'ping' ]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
 
   app:
     build: .
@@ -35,6 +42,8 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      redis:
+        condition: service_healthy
     volumes:
       - .:/app
     env_file:
@@ -44,7 +53,7 @@ services:
     build: .
     tty: true
     command: celery -A config worker -l info -P gevent
-    restart: on-failure
+
     volumes:
       - .:/app
     depends_on:
@@ -56,7 +65,7 @@ services:
     build: .
     tty: true
     command: celery -A config beat -l info
-    restart: on-failure
+
     volumes:
       - .:/app
     depends_on:
