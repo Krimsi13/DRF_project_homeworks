@@ -192,7 +192,7 @@ CELERY_TASK_TIME_LIMIT = 30 * 60
 
 CELERY_BEAT_SCHEDULE = {
     'task-name': {
-        'task': 'materials.check_activity_user',  # Путь к задаче
+        'task': 'materials.tasks.check_activity_user',  # Путь к задаче
         'schedule': timedelta(minutes=1),  # Расписание выполнения задачи (например, каждую минуту)
     },
 }
